@@ -1,29 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchPosts } from '../actions/postActions';
 
 class Posts extends Component {
-    // Accepts props in constructor
-    constructor(props){
-        // passes props to super
-        super(props);
-        this.state = {
-            posts: []
-        }
-    }
+    // State comes from redux now
 
-    // Life cyle method
+    // Lifecycle method
     componentWillMount(){
-        console.log('Component did mount');
-        // returns a promise, map to json       
-        fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(res => res.json())
-            .then(data => this.setState({posts: data})); // store the response data in the local state
+        this.props.fetchPosts();
     }
 
     render() {
         // Map the items from state into a list of divs containing the details
-        const postItems = this.state.posts.map(post =>(
+        const postItems = this.props.posts.map(post =>(
             <div key={post.id}>
-                <h3>{post.title}</h3>
+                <h3>{post.id}.{post.title}</h3>
                 <p>{post.body}</p>
             </div>
         ));
@@ -34,9 +26,19 @@ class Posts extends Component {
                 {postItems}       
                       
             </div>
-        )
+        );
     }
 }
 
-export default Posts;
+Posts.propTypes = {
+    fetchPosts: propTypes.func.isRequired,
+    posts: propTypes.array.isRequired
+}
+
+// MapStateToProps => get state from redux, and map it to properties of component
+const mapStateToProps = state =>({
+    posts: state.posts.items
+});
+
+export default connect(mapStateToProps,{fetchPosts})(Posts);
 

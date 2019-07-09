@@ -12,10 +12,11 @@ class PostForm extends Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    // Updates the stats with the content of the inputs on change
+    // Updates the state with the content of the inputs on change
     onChange(e) {
         this.setState({[e.target.name]: e.target.value});
     }
+    // When submitted take content from state and send to api
     onSubmit(e){
         e.preventDefault();
 
@@ -32,7 +33,7 @@ class PostForm extends Component {
             body: JSON.stringify(post)
         })
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => console.log(data)) // display the response data in the console
     }
 
     render() {
