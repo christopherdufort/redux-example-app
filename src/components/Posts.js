@@ -11,6 +11,14 @@ class Posts extends Component {
         this.props.fetchPosts();
     }
 
+    // Run when recieving new property
+    componentWillReceiveProps(nextProps){
+        if(nextProps.newPost){
+            // Push to end or unshift to start
+            this.props.posts.unshift(nextProps.newPost);
+        }
+    }
+
     render() {
         // Map the items from state into a list of divs containing the details
         const postItems = this.props.posts.map(post =>(
@@ -31,12 +39,14 @@ class Posts extends Component {
 
 Posts.propTypes = {
     fetchPosts: propTypes.func.isRequired,
-    posts: propTypes.array.isRequired
+    posts: propTypes.array.isRequired,
+    newPost: propTypes.object
 }
 
 // MapStateToProps => get state from redux, and map it to properties of component
 const mapStateToProps = state =>({
-    posts: state.posts.items
+    posts: state.posts.items,
+    newPost: state.posts.item
 });
 
 export default connect(mapStateToProps,{fetchPosts})(Posts);
