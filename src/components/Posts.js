@@ -23,8 +23,7 @@ class Posts extends Component {
             <div>
                 <h1>Posts</h1>
                 {/* display the new value */}
-                {postItems}       
-                      
+                {postItems}         
             </div>
         );
     }
